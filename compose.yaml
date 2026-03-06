@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    container_name: manga-store-db
+    volumes:
+      - pgdata:/var/lib/postgresql
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+
+volumes:
+  pgdata:
