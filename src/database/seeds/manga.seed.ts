@@ -1,6 +1,9 @@
 import { Pool } from 'pg';
 
-export async function seedManga(pool: Pool, authorIds: Record<string, number>) {
+export async function seedManga(
+  pool: Pool,
+  authorIds: Record<string, number>,
+): Promise<Record<string, number>> {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -56,9 +59,11 @@ export async function seedManga(pool: Pool, authorIds: Record<string, number>) {
       },
     ];
 
+    const mangaIds: Record<string, number> = {};
+
     for (const manga of mangaList) {
-      await client.query(
-        `INSERT INTO manga (title, author_id, description, cover_url) VALUES ($1, $2, $3, $4)`,
+      const result = await client.query<{ id: number }>(
+        `INSERT INTO manga (title, author_id, description, cover_url) VALUES ($1, $2, $3, $4) RETURNING id`,
         [
           manga.title,
           authorIds[manga.authorName],
@@ -66,10 +71,12 @@ export async function seedManga(pool: Pool, authorIds: Record<string, number>) {
           manga.coverUrl,
         ],
       );
+      mangaIds[manga.title] = result.rows[0].id;
     }
 
     await client.query('COMMIT');
     console.log('Manga seeded');
+    return mangaIds;
   } catch (err) {
     await client.query('ROLLBACK');
     throw err;
