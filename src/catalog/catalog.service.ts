@@ -1,7 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CatalogRepository } from './catalog.repository';
 import { GetMangaQueryDto } from './dto/get-manga-query.dto';
-import type { MangaDetail, MangaRow, PaginatedResult, VolumeRow, } from '../common/interfaces';
+import type {
+  MangaDetail,
+  MangaRow,
+  PaginatedResult,
+  VolumeRow,
+} from '../common/interfaces';
 
 @Injectable()
 export class CatalogService {
