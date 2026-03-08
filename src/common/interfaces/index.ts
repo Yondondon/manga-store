@@ -89,3 +89,37 @@ export interface CartResponse {
   id: number | null;
   items: CartItem[];
 }
+
+export interface CartItemWithStock extends CartItem {
+  quantity_in_stock: number;
+}
+
+export type OrderStatus = 'pending' | 'processing' | 'delivered' | 'cancelled';
+
+export interface OrderRow {
+  id: number;
+  status: OrderStatus;
+  total_price: string;
+  shipping_address: string;
+  created_at: Date;
+}
+
+export interface OrderItemDetail {
+  id: number;
+  volume_id: number;
+  quantity: number;
+  price_at_purchase: string;
+  volume_number: number;
+  cover_url: string;
+  manga_id: number;
+  manga_title: string;
+}
+
+export interface OrderDetail {
+  id: number;
+  status: OrderStatus;
+  total_price: string;
+  shipping_address: string;
+  created_at: Date;
+  items: OrderItemDetail[];
+}
