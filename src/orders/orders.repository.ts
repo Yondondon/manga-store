@@ -1,6 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Pool, PoolClient } from 'pg';
-import { CartItemWithStock, OrderDetail, OrderItemDetail, OrderRow, } from '../common/interfaces';
+import {
+  CartItemWithStock,
+  OrderDetail,
+  OrderItemDetail,
+  OrderRow,
+} from '../common/interfaces';
 
 @Injectable()
 export class OrdersRepository {
