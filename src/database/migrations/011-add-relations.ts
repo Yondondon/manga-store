@@ -39,13 +39,24 @@ export async function addRelations(pool: Pool) {
     await client.query(`
       ALTER TABLE "order_items"
         ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id")
-          ON UPDATE NO ACTION ON DELETE NO ACTION;
+          ON UPDATE NO ACTION ON DELETE CASCADE;
     `);
 
     await client.query(`
       ALTER TABLE "order_items"
         ADD FOREIGN KEY ("volume_id") REFERENCES "volumes" ("id")
           ON UPDATE NO ACTION ON DELETE NO ACTION;
+    `);
+
+    await client.query(`
+      ALTER TABLE "cart_items"
+        ADD FOREIGN KEY ("volume_id") REFERENCES "volumes" ("id")
+          ON UPDATE NO ACTION ON DELETE NO ACTION;
+    `);
+
+    await client.query(`
+      ALTER TABLE "cart_items"
+        ADD CONSTRAINT cart_items_cart_id_volume_id_unique UNIQUE ("cart_id", "volume_id")
     `);
 
     await client.query('COMMIT');

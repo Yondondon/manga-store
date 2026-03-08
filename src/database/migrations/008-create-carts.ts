@@ -11,7 +11,7 @@ export async function createCartsTable(pool: Pool) {
       (
         "id"         SERIAL      NOT NULL UNIQUE,
         "user_id"    INTEGER     NOT NULL UNIQUE,
-        "updated_at" TIMESTAMPTZ NOT NULL,
+        "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         PRIMARY KEY ("id")
       )
     `);

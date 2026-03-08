@@ -66,3 +66,26 @@ export interface PaginatedResult<T> {
   data: T[];
   meta: { total: number; page: number; limit: number };
 }
+
+export interface CartItemRow {
+  id: number;
+  cart_id: number;
+  volume_id: number;
+  quantity: number;
+}
+
+export interface CartItem {
+  id: number;
+  volume_id: number;
+  quantity: number;
+  volume_number: number;
+  price: string;
+  cover_url: string;
+  manga_id: number;
+  manga_title: string;
+}
+
+export interface CartResponse {
+  id: number | null;
+  items: CartItem[];
+}
