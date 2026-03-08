@@ -1,0 +1,102 @@
+Table users [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	email varchar(255) [ not null, unique ]
+	password varchar(255) [ not null ]
+	name varchar(255) [ not null ]
+	created_at timestamptz [ not null ]
+}
+
+Table orders [headercolor: #175e7a] {
+	id bigserial [ pk, not null, unique ]
+	user_id integer [ not null ]
+	status varchar(255) [ not null ]
+	total_price numeric(10, 2) [ not null, default: 0 ]
+	shipping_address text [ not null ]
+	created_at timestamptz [ not null ]
+}
+
+Table authors [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	name varchar(255) [ not null ]
+}
+
+Table genres [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	name varchar(255) [ not null ]
+}
+
+Table manga [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	title varchar(255) [ not null ]
+	description text [ not null ]
+	author_id integer [ not null ]
+	cover_url text [ not null ]
+	created_at timestamptz [ not null ]
+}
+
+Table manga_genres [headercolor: #175e7a] {
+	manga_id integer [ pk, not null ]
+	genre_id integer [ pk, not null ]
+}
+
+Table volumes [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	manga_id integer [ not null ]
+	number smallint [ not null ]
+	price numeric(10, 2) [ not null ]
+	quantity integer [ not null, default: 0 ]
+	cover_url text [ not null ]
+}
+
+Table carts [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	user_id integer [ not null, unique ]
+	updated_at timestamptz [ not null ]
+}
+
+Table cart_items [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	cart_id integer [ not null ]
+	volume_id integer [ not null ]
+	quantity integer [ not null, default: 0 ]
+}
+
+Table order_items [headercolor: #175e7a] {
+	id serial [ pk, not null, unique ]
+	order_id integer [ not null, unique ]
+	volume_id integer [ not null ]
+	quantity integer [ not null, default: 0 ]
+	price_at_purchase numeric(10, 2) [ not null, default: 0 ]
+}
+
+Ref fk_authors_id_manga {
+	authors.id < manga.author_id [ delete: restrict, update: no action ]
+}
+
+Ref fk_manga_id_volumes {
+	manga.id < volumes.manga_id [ delete: cascade, update: no action ]
+}
+
+Ref fk_users_id_carts {
+	users.id - carts.user_id [ delete: cascade, update: no action ]
+}
+
+Ref fk_carts_id_cart_items {
+	carts.id < cart_items.cart_id [ delete: no action, update: no action ]
+}
+
+Ref fk_users_id_orders {
+	users.id < orders.user_id [ delete: cascade, update: no action ]
+}
+
+Ref fk_orders_id_order_items {
+	orders.id < order_items.order_id [ delete: cascade, update: no action ]
+}
+
+Ref fk_volumes_id_order_items {
+	volumes.id < order_items.volume_id [ delete: no action, update: no action ]
+}
+
+Ref fk_cart_items_volume_id_volumes {
+	cart_items.volume_id > volumes.id [ delete: no action, update: no action ]
+}
