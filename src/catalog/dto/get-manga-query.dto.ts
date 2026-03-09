@@ -1,17 +1,21 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsInt, IsOptional, IsString, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetMangaQueryDto {
+  @ApiPropertyOptional({ example: 'Naruto' })
   @IsOptional()
   @IsString()
   search?: string;
 
+  @ApiPropertyOptional({ example: 1, minimum: 1, default: 1 })
   @IsOptional()
   @IsInt()
   @Min(1)
   @Type(() => Number)
   page: number = 1;
 
+  @ApiPropertyOptional({ example: 10, minimum: 1, default: 10 })
   @IsOptional()
   @IsInt()
   @Min(1)
